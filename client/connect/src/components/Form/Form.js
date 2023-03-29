@@ -14,11 +14,12 @@ const Form = ({ currentId, setCurrentId }) => {
     selectedFile: "",
   });
   const post = useSelector((state) =>
-    currentId ? state.posts.find((p) => p.id === currentId) : null
+    currentId ? state.posts.find((p) => p._id === currentId) : null
   );
 
   const dispatch = useDispatch();
   const classes = useStyles();
+
   useEffect(() => {
     if (post) setPostData(post);
   }, [post]);
@@ -31,10 +32,11 @@ const Form = ({ currentId, setCurrentId }) => {
     } else {
       dispatch(createPost(postData));
     }
-    clear()
+
+    clear();
   };
   const clear = () => {
-    setCurrentId(null)
+    setCurrentId(null);
     setPostData({
       creator: "",
       title: "",
@@ -88,7 +90,9 @@ const Form = ({ currentId, setCurrentId }) => {
           label="Tags"
           fullWidth
           value={postData.tags}
-          onChange={(e) => setPostData({ ...postData, tags: e.target.value })}
+          onChange={(e) =>
+            setPostData({ ...postData, tags: e.target.value.split(",") })
+          }
         ></TextField>
         <div className={classes.fileInput}>
           <FileBase
